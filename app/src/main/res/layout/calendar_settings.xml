@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            style="@style/settings_header_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="ACTIVATION" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#DADADA" />
+
+        <LinearLayout
+            android:id="@+id/activation_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onCalendarStatusSelection"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" >
+
+            <TextView
+                style="@style/settings_item_style"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:text="Please select ringer profile" />
+
+            <TextView
+                android:id="@+id/calendarStatus"
+                style="@style/settings_subitem_style"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:text="Calendar status goes here" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/settings_header_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="CUSTOMIZATION" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#DADADA" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onWeekDaysSelection"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" >
+
+            <TextView
+                style="@style/settings_item_style"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Week days limitation" />
+
+            <TextView
+                android:id="@+id/weekDays"
+                style="@style/settings_subitem_style"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Current week days limit goes here" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#DADADA" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/layout_selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onDelayRingerRestoreSelection"            
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" >
+
+            <TextView
+                style="@style/settings_item_style"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Delay ringer restore" />
+
+            <TextView
+                android:id="@+id/ringerRestoreDelay"
+                style="@style/settings_subitem_style"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Ringer restore delay goes here" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bpolite">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name="com.bpolite.event.MutedEvent" >
+            <intent-filter>
+                <action android:name="android.media.RINGER_MODE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.bpolite.DeviceRebootedEvent" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!-- <action android:name="android.intent.action.QUICKBOOT_POWERON" /> -->
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.bpolite.event.CalendarChangedEvent" >
+            <intent-filter>
+                <action android:name="android.intent.action.PROVIDER_CHANGED" />
+
+                <data android:scheme="content" />
+                <data android:host="com.android.calendar" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="com.bpolite.event.CalendarCheckEvent"
+            android:process=":remote" />
+
+        <service
+            android:name="com.bpolite.service.CalendarCheckService"
+            android:enabled="true" />
+
+        <service
+            android:name="com.bpolite.service.EventInstanceService"
+            android:enabled="true" />
+
+        <activity
+            android:name="com.bpolite.activity.CalendarSettingsActivity"
+            android:parentActivityName="com.bpolite.activity.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bpolite.activity.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>
