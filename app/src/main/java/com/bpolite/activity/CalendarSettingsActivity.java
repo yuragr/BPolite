@@ -20,7 +20,7 @@ import com.bpolite.data.pojo.EventInstance;
 import com.bpolite.data.repo.CalendarRepository;
 import com.bpolite.data.repo.EventInstanceRepository;
 import com.bpolite.utils.CalendarCheckSchedulerUtils;
-import com.bpolite.utils.StringUtils;
+import com.bpolite.utils.WeekDayUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,7 +140,7 @@ public class CalendarSettingsActivity extends Activity {
 	private void updateWeekDaysView() {
 		TextView weekDaysView = (TextView) findViewById(R.id.weekDays);
 
-		String weekDaysString = StringUtils.convertListToCommaSeparatedStringForDisplay(calendar
+		String weekDaysString = WeekDayUtils.convertListToCommaSeparatedStringForDisplay(calendar
 				.getWeekDays());
 
 		weekDaysView.setText(weekDaysString);

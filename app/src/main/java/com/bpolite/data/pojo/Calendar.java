@@ -5,7 +5,10 @@ import com.bpolite.data.comparator.WeekDayComparator;
 import com.bpolite.data.enums.CalendarStatus;
 import com.bpolite.data.enums.RingerRestoreDelay;
 import com.bpolite.data.enums.WeekDay;
-import com.bpolite.utils.StringUtils;
+import com.bpolite.utils.WeekDayUtils;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -107,7 +110,7 @@ public class Calendar implements Serializable {
 
 			Collections.sort(getWeekDays(), new WeekDayComparator());
 
-			statusStr += " on " + StringUtils.convertListToCommaSeparatedStringForDisplay(getWeekDays());
+			statusStr += " on " + WeekDayUtils.convertListToCommaSeparatedStringForDisplay(getWeekDays());
 
 			if (!getRingerRestoreDelay().equals(RingerRestoreDelay.NO_DELAY)) {
 				statusStr += " (+" + getRingerRestoreDelay().getValue() + ")";
@@ -148,9 +151,9 @@ public class Calendar implements Serializable {
 			Calendar other = (Calendar) o;
 			if (this.calendarId != other.calendarId)
 				return false;
-			if (!StringUtils.isStringsEqual(this.accountName, other.accountName))
+			if (!StringUtils.equals(this.accountName, other.accountName))
 				return false;
-			if (!StringUtils.isStringsEqual(this.ownerName, other.ownerName))
+			if (!StringUtils.equals(this.ownerName, other.ownerName))
 				return false;
 
 			return true;
@@ -160,9 +163,13 @@ public class Calendar implements Serializable {
 
 	@Override
 	public String toString() {
-		return Calendar.class.getSimpleName() + "[calendarId= " + calendarId + ", displayName="
-				+ displayName + ", accountName=" + accountName + ", ownerName=" + ownerName + ", status="
-				+ status.getValue() + "]";
+		return new ToStringBuilder(this)
+				.append("calendarId", calendarId)
+				.append("displayName", displayName)
+				.append("accountName", accountName)
+				.append("ownerName", ownerName)
+				.append("status", status.getValue())
+				.toString();
 	}
 
 	@Override

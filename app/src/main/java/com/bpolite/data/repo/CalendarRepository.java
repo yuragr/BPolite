@@ -17,8 +17,8 @@ import com.bpolite.data.enums.CalendarStatus;
 import com.bpolite.data.enums.RingerRestoreDelay;
 import com.bpolite.data.enums.WeekDay;
 import com.bpolite.data.pojo.Calendar;
-import com.bpolite.utils.StringUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -180,7 +180,7 @@ public class CalendarRepository {
 
                     xs.startTag("", "weekDays");
                     ArrayList<WeekDay> weekDays = calendar.getWeekDays();
-                    xs.text("" + StringUtils.convertListToCommaSeparatedString(weekDays));
+                    xs.text("" + StringUtils.join(weekDays, IConst.COMMA));
                     xs.endTag("", "weekDays");
 
                     xs.startTag("", "ringerRestoreDelay");
