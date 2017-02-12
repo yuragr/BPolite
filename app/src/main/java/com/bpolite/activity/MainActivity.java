@@ -27,7 +27,7 @@ import com.bpolite.R;
 import com.bpolite.data.comparator.CalendarComparator;
 import com.bpolite.data.enums.CalendarStatus;
 import com.bpolite.data.pojo.Calendar;
-import com.bpolite.data.repo.CalendarRepository;
+import com.bpolite.data.repo.app.AppCalendarRepository;
 import com.bpolite.utils.CalendarCheckSchedulerUtils;
 
 import java.io.Serializable;
@@ -65,7 +65,6 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 createUI();
-
                 CalendarCheckSchedulerUtils.scheduleCalendarCheck(MainActivity.this);
             }
         });
@@ -118,7 +117,7 @@ public class MainActivity extends Activity {
 
     private synchronized void readCalendars() {
         if (!started) {
-            calendars = CalendarRepository.getCalendars(MainActivity.this);
+            calendars = AppCalendarRepository.getCalendars(MainActivity.this);
             started = true;
         }
     }

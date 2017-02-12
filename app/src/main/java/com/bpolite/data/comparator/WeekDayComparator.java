@@ -18,7 +18,6 @@ public class WeekDayComparator implements Comparator<WeekDay> {
     }
 
     /**
-     *
      * @param firstDayOfWeekIndex 0 = Sun, 1 = Mon ...
      */
     public WeekDayComparator(int firstDayOfWeekIndex) {

@@ -12,15 +12,15 @@ import static android.media.AudioManager.RINGER_MODE_VIBRATE;
 
 public class MutedEvent extends BroadcastReceiver {
 
-	@Override
-	public void onReceive(Context context, Intent intent) {
+    @Override
+    public void onReceive(Context context, Intent intent) {
 
-		// if the user had muted
-		int newRingerMode = intent.getIntExtra(EXTRA_RINGER_MODE, -1);
-		if (newRingerMode == RINGER_MODE_SILENT || newRingerMode == RINGER_MODE_VIBRATE) {
-			return;
-		} else {
-			NotificationUtils.removeNotification(context);
-		}
-	}
+        // if the user had muted
+        int newRingerMode = intent.getIntExtra(EXTRA_RINGER_MODE, -1);
+        if (newRingerMode == RINGER_MODE_SILENT || newRingerMode == RINGER_MODE_VIBRATE) {
+            return;
+        } else {
+            NotificationUtils.removeNotification(context);
+        }
+    }
 }

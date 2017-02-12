@@ -5,6 +5,7 @@ import com.bpolite.IConst;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 
 public enum WeekDay {
 	SUN(Calendar.SUNDAY,	"Sunday"),
@@ -48,7 +49,7 @@ public enum WeekDay {
 		throw new IllegalArgumentException();
 	}
 
-	public static ArrayList<WeekDay> getAsEnumList(String listStr) {
+	public static List<WeekDay> getAsEnumList(String listStr) {
 		HashSet<WeekDay> weekDaysSet = new HashSet<>();
 		if (listStr != null && !listStr.isEmpty()) {
 			String[] tokens = listStr.split(IConst.COMMA);

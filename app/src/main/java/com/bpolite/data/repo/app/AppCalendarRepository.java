@@ -1,22 +1,16 @@
-package com.bpolite.data.repo;
+package com.bpolite.data.repo.app;
 
-import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.CalendarContract.Calendars;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.bpolite.IConst;
 import com.bpolite.data.comparator.CalendarComparator;
 import com.bpolite.data.enums.CalendarStatus;
+import com.bpolite.data.enums.EventAvailability;
 import com.bpolite.data.enums.RingerRestoreDelay;
 import com.bpolite.data.enums.WeekDay;
 import com.bpolite.data.pojo.Calendar;
+import com.bpolite.data.repo.device.DeviceCalendarRepository;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
@@ -31,37 +25,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
-public class CalendarRepository {
+public class AppCalendarRepository {
     public static final Object readWriteLock = new Object();
-
-    // Projection array. Creating indexes for this array instead of doing dynamic lookups improves performance.
-    public static final String[] CALENDAR_PROJECTION = new String[]{Calendars._ID, // 0
-            Calendars.ACCOUNT_NAME, // 1
-            Calendars.CALENDAR_DISPLAY_NAME, // 2
-            Calendars.OWNER_ACCOUNT // 3
-    };
-
-    // The indexes for the projection array above.
-    private static final int PROJECTION_ID_INDEX = 0;
-    private static final int PROJECTION_ACCOUNT_NAME_INDEX = 1;
-    private static final int PROJECTION_DISPLAY_NAME_INDEX = 2;
-    private static final int PROJECTION_OWNER_ACCOUNT_INDEX = 3;
-
-    public static CalendarStatus getCalendarStatus(Context context, Calendar calendar) {
-
-        SharedPreferences calendarPreferences = context.getSharedPreferences(IConst.CALENDARS_FILE,
-                Context.MODE_PRIVATE);
-
-        String statusStr = calendarPreferences.getString(calendar.getRepositoryKey(),
-                CalendarStatus.NONE.getValue());
-
-        return CalendarStatus.getAsEnum(statusStr);
-    }
 
     public static void saveCalendar(Context context, Calendar calendar) {
         synchronized (readWriteLock) {
-            ArrayList<Calendar> calendars = getCalendars(context);
+            List<Calendar> calendars = getCalendars(context);
             int replaceIndex = calendars.indexOf(calendar);
             calendars.set(replaceIndex, calendar);
             saveCalendarsToXml(context, calendars);
@@ -77,13 +48,13 @@ public class CalendarRepository {
      * @return
      */
     @SuppressWarnings({"unchecked"})
-    public static ArrayList<Calendar> getCalendars(Context context) {
-        ArrayList<Calendar> calendars = new ArrayList<>();
+    public static List<Calendar> getCalendars(Context context) {
+        List<Calendar> calendars = new ArrayList<>();
 
         synchronized (readWriteLock) {
             try {
                 HashSet<Calendar> deviceCalendars = new HashSet<>();
-                deviceCalendars.addAll(getDeviceCalendars(context));
+                deviceCalendars.addAll(DeviceCalendarRepository.getDeviceCalendars(context));
 
                 if (!deviceCalendars.isEmpty()) {
                     ArrayList<Calendar> fileCalendarList = loadCalendarsFromXml(context);
@@ -128,13 +99,13 @@ public class CalendarRepository {
                     }
                 }
             } catch (Exception e) {
-                Log.e(CalendarRepository.class.getSimpleName(), "problem loading calendar file", e);
+                Log.e(AppCalendarRepository.class.getSimpleName(), "problem loading calendar file", e);
             }
         }
         return calendars;
     }
 
-    private static File saveCalendarsToXml(Context context, ArrayList<Calendar> calendars) {
+    private static File saveCalendarsToXml(Context context, List<Calendar> calendars) {
         File calendarsFile = null;
         synchronized (readWriteLock) {
             try {
@@ -179,9 +150,14 @@ public class CalendarRepository {
                     xs.endTag("", "status");
 
                     xs.startTag("", "weekDays");
-                    ArrayList<WeekDay> weekDays = calendar.getWeekDays();
+                    List<WeekDay> weekDays = calendar.getWeekDays();
                     xs.text("" + StringUtils.join(weekDays, IConst.COMMA));
                     xs.endTag("", "weekDays");
+
+                    xs.startTag("", "eventAvailabilities");
+                    List<EventAvailability> eventAvailabilities = calendar.getEventAvailabilities();
+                    xs.text("" + StringUtils.join(eventAvailabilities, IConst.COMMA));
+                    xs.endTag("", "eventAvailabilities");
 
                     xs.startTag("", "ringerRestoreDelay");
                     xs.text("" + calendar.getRingerRestoreDelay().getValue());
@@ -191,9 +167,9 @@ public class CalendarRepository {
                 }
                 xs.endDocument();
             } catch (IOException e) {
-                Log.e(CalendarRepository.class.getSimpleName(), "problem getting calendars from file", e);
+                Log.e(AppCalendarRepository.class.getSimpleName(), "problem getting calendars from file", e);
             } catch (XmlPullParserException e) {
-                Log.e(CalendarRepository.class.getSimpleName(), "problem reading xml file", e);
+                Log.e(AppCalendarRepository.class.getSimpleName(), "problem reading xml file", e);
             }
         }
         return calendarsFile;
@@ -223,9 +199,9 @@ public class CalendarRepository {
                 }
             }
         } catch (IOException e) {
-            Log.e(CalendarRepository.class.getSimpleName(), "problem getting calendars from file", e);
+            Log.e(AppCalendarRepository.class.getSimpleName(), "problem getting calendars from file", e);
         } catch (XmlPullParserException e) {
-            Log.e(CalendarRepository.class.getSimpleName(), "problem reading xml file", e);
+            Log.e(AppCalendarRepository.class.getSimpleName(), "problem reading xml file", e);
         }
 
         return calendars;
@@ -252,11 +228,12 @@ public class CalendarRepository {
                     calendar.setStatus(CalendarStatus.getAsEnum(xpp.getText()));
                 } else if (property.equalsIgnoreCase("weekDays")) {
                     calendar.setWeekDays(WeekDay.getAsEnumList(xpp.getText()));
+                } else if (property.equalsIgnoreCase("eventAvailabilities")) {
+                    calendar.setEventAvailabilities(EventAvailability.getAsEnumList(xpp.getText()));
                 } else if (property.equalsIgnoreCase("ringerRestoreDelay")) {
                     calendar.setRingerRestoreDelay(RingerRestoreDelay.getByValue(Integer.parseInt(xpp
                             .getText())));
                 }
-
             }
             if (xpp.getEventType() != XmlPullParser.END_DOCUMENT)
                 xpp.next();
@@ -264,44 +241,8 @@ public class CalendarRepository {
         return calendar;
     }
 
-    private static ArrayList<Calendar> getDeviceCalendars(Context context) {
-        ArrayList<Calendar> result = new ArrayList<>();
-        Cursor cursor;
-        ContentResolver cr = context.getContentResolver();
-        Uri uri = Calendars.CONTENT_URI;
-
-        // Submit the query and get a Cursor object back.
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-
-            cursor = cr.query(uri, CALENDAR_PROJECTION, null, null, null);
-            if (cursor != null) {
-
-                // Use the cursor to step through the returned records
-                while (cursor.moveToNext()) {
-                    Calendar calendar = new Calendar();
-
-                    // TODO what about deleted calendars?
-                    // http://developer.android.com/reference/android/provider/CalendarContract.SyncColumns.html#DELETED
-
-                    // Get the field values
-                    calendar.setCalendarId(cursor.getLong(PROJECTION_ID_INDEX));
-                    calendar.setDisplayName(cursor.getString(PROJECTION_DISPLAY_NAME_INDEX));
-                    calendar.setAccountName(cursor.getString(PROJECTION_ACCOUNT_NAME_INDEX));
-                    calendar.setOwnerName(cursor.getString(PROJECTION_OWNER_ACCOUNT_INDEX));
-                    calendar.setStatus(CalendarStatus.NONE);
-
-                    // Log.d(CalendarRepository.class.getSimpleName(), calendar.toString());
-                    result.add(calendar);
-                }
-                cursor.close();
-            }
-            Collections.sort(result, new CalendarComparator());
-        }
-        return result;
-    }
-
     public static Calendar getCalendarByHashCode(Context context, int calendarHashCode) {
-        ArrayList<Calendar> calendars = getCalendars(context);
+        List<Calendar> calendars = getCalendars(context);
         for (Calendar calendar : calendars) {
             if (calendar.hashCode() == calendarHashCode)
                 return calendar;
