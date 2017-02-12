@@ -137,7 +137,7 @@
                 android:text="Availability" />
 
             <TextView
-                android:id="@+id/value"
+                android:id="@+id/availability"
                 style="@style/settings_subitem_style"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
