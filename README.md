@@ -14,7 +14,7 @@ Features that can be configured per calendar:
 - Mute or vibrate
 - You can add extra minutes to each event in the calendar.
 - You can restrict the silencing to take place only on certain days of the week.
-- You can restrict the sliencing based on meeting availability: free, busy and tenative
+- You can restrict the silencing based on meeting availability: free, busy and tentative.
 
 Not supported:
 - All day events.
