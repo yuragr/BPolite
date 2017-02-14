@@ -9,7 +9,7 @@
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="6dip"
+        android:layout_marginEnd="6dip"
         android:contentDescription="TODO"
         android:src="@drawable/calendar" />
 
@@ -17,10 +17,10 @@
         android:id="@+id/calendarName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/calendarIcon"
+        android:layout_toEndOf="@id/calendarIcon"
         android:gravity="center_vertical"
         android:textSize="16sp" />
 
@@ -28,11 +28,11 @@
         android:id="@+id/accountName"
         android:layout_width="fill_parent"
         android:layout_height="20dip"
-        android:layout_alignLeft="@+id/calendarName"
-        android:layout_toRightOf="@id/calendarIcon"
-        android:layout_alignParentRight="true"
+        android:layout_alignStart="@+id/calendarName"
+        android:layout_toEndOf="@id/calendarIcon"
+        android:layout_alignParentEnd="true"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textSize="12sp"
         android:layout_below="@+id/calendarName"
         android:layout_above="@+id/calendarUsage" />
@@ -41,10 +41,10 @@
         android:id="@+id/calendarUsage"
         android:layout_width="fill_parent"
         android:layout_height="16dip"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/calendarIcon"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/calendarIcon"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textSize="12sp"
         android:layout_alignParentBottom="true" />
 
