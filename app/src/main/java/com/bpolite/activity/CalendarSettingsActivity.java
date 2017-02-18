@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CalendarSettingsActivity extends Activity {
@@ -38,8 +39,8 @@ public class CalendarSettingsActivity extends Activity {
             CalendarStatus.MUTED.getValue(), CalendarStatus.NONE.getValue()};
     private Calendar calendar = null;
     private Calendar origCalendar = null;
-    private ArrayList<WeekDay> weekDays = null;
-    private ArrayList<EventAvailability> eventAvailabilities = null;
+    private List<WeekDay> weekDays = null;
+    private List<EventAvailability> eventAvailabilities = null;
     private AlertDialog calendarStatusDialog = null;
     private AlertDialog weekDaySelectionDialog = null;
     private AlertDialog eventAvailabilitySelectionDialog = null;
@@ -129,7 +130,7 @@ public class CalendarSettingsActivity extends Activity {
 
     private boolean[] getSelectedWeekDays() {
         boolean[] selectedWeekDays = new boolean[weekDays.size()];
-        HashSet<WeekDay> calendarWeekDays = new HashSet<>(calendar.getWeekDays());
+        Set<WeekDay> calendarWeekDays = new HashSet<>(calendar.getWeekDays());
 
         for (int i = 0; i < weekDays.size(); i++) {
             selectedWeekDays[i] = calendarWeekDays.contains(weekDays.get(i));
@@ -140,7 +141,7 @@ public class CalendarSettingsActivity extends Activity {
 
     private boolean[] getSelectedEventAvailabilities() {
         boolean[] selectedEventAvailabilities = new boolean[eventAvailabilities.size()];
-        HashSet<EventAvailability> calendarEventAvailabilities = new HashSet<>(calendar.getEventAvailabilities());
+        Set<EventAvailability> calendarEventAvailabilities = new HashSet<>(calendar.getEventAvailabilities());
 
         for (int i = 0; i < eventAvailabilities.size(); i++) {
             selectedEventAvailabilities[i] = calendarEventAvailabilities.contains(eventAvailabilities.get(i));

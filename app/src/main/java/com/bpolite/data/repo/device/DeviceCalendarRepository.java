@@ -15,6 +15,7 @@ import com.bpolite.data.pojo.Calendar;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by yurig on 12-Feb-17.
@@ -34,8 +35,8 @@ public class DeviceCalendarRepository {
     private static final int PROJECTION_DISPLAY_NAME_INDEX = 2;
     private static final int PROJECTION_OWNER_ACCOUNT_INDEX = 3;
 
-    public static ArrayList<Calendar> getDeviceCalendars(Context context) {
-        ArrayList<Calendar> result = new ArrayList<>();
+    public static List<Calendar> getDeviceCalendars(Context context) {
+        List<Calendar> result = new ArrayList<>();
         Cursor cursor;
         ContentResolver cr = context.getContentResolver();
         Uri uri = CalendarContract.Calendars.CONTENT_URI;

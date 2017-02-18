@@ -1,6 +1,7 @@
 package com.bpolite.data.repo.app;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bpolite.IConst;
@@ -12,6 +13,7 @@ import com.bpolite.data.enums.WeekDay;
 import com.bpolite.data.pojo.Calendar;
 import com.bpolite.data.repo.device.DeviceCalendarRepository;
 
+import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -26,16 +28,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AppCalendarRepository {
-    public static final Object readWriteLock = new Object();
+    private static final Object sync = new Object();
 
     public static void saveCalendar(Context context, Calendar calendar) {
-        synchronized (readWriteLock) {
+        synchronized (sync) {
             List<Calendar> calendars = getCalendars(context);
             int replaceIndex = calendars.indexOf(calendar);
             calendars.set(replaceIndex, calendar);
-            saveCalendarsToXml(context, calendars);
+            saveCalendarsToXml(getCalendarsXmlFile(context), calendars);
         }
 
         // FIXME if the status was changed to NONE, then we have to clean all the notifications
@@ -51,17 +54,17 @@ public class AppCalendarRepository {
     public static List<Calendar> getCalendars(Context context) {
         List<Calendar> calendars = new ArrayList<>();
 
-        synchronized (readWriteLock) {
+        synchronized (sync) {
             try {
-                HashSet<Calendar> deviceCalendars = new HashSet<>();
+                Set<Calendar> deviceCalendars = new HashSet<>();
                 deviceCalendars.addAll(DeviceCalendarRepository.getDeviceCalendars(context));
 
                 if (!deviceCalendars.isEmpty()) {
-                    ArrayList<Calendar> fileCalendarList = loadCalendarsFromXml(context);
+                    List<Calendar> fileCalendarList = loadCalendarsFromXml(getCalendarsXmlFile(context));
 
                     // there are calendars in the device. we have to load and compare the saved calendars
                     if (fileCalendarList != null && !fileCalendarList.isEmpty()) {
-                        HashSet<Calendar> fileCalendars = new HashSet<>();
+                        Set<Calendar> fileCalendars = new HashSet<>();
                         fileCalendars.addAll(fileCalendarList);
 
                         if (fileCalendars.equals(deviceCalendars)) {
@@ -88,14 +91,14 @@ public class AppCalendarRepository {
                             }
 
                             // save the calendar changes to file
-                            saveCalendarsToXml(context, calendars);
+                            saveCalendarsToXml(getCalendarsXmlFile(context), calendars);
                         }
                     } else {
 
                         // probably running for the first time since there are no saved calendars save device's calendars to file
                         calendars.clear();
                         calendars.addAll(deviceCalendars);
-                        saveCalendarsToXml(context, calendars);
+                        saveCalendarsToXml(getCalendarsXmlFile(context), calendars);
                     }
                 }
             } catch (Exception e) {
@@ -105,17 +108,13 @@ public class AppCalendarRepository {
         return calendars;
     }
 
-    private static File saveCalendarsToXml(Context context, List<Calendar> calendars) {
-        File calendarsFile = null;
-        synchronized (readWriteLock) {
+    protected static File saveCalendarsToXml(File calendarsXmlFile, List<Calendar> calendars) {
+        synchronized (sync) {
             try {
-                File filesDir = context.getFilesDir();
-                calendarsFile = new File(filesDir, IConst.CALENDARS_FILE);
-
-                if (calendarsFile.exists()) {
-                    calendarsFile.delete();
+                if (calendarsXmlFile.exists()) {
+                    calendarsXmlFile.delete();
                 }
-                calendarsFile.createNewFile();
+                calendarsXmlFile.createNewFile();
 
                 if (calendars != null)
                     Collections.sort(calendars, new CalendarComparator());
@@ -123,8 +122,8 @@ public class AppCalendarRepository {
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
                 XmlSerializer xs = factory.newSerializer();
-                xs.setOutput(new FileOutputStream(calendarsFile), "UTF-8");
-                xs.startDocument("UTF-8", true);
+                xs.setOutput(new FileOutputStream(calendarsXmlFile), CharEncoding.UTF_8);
+                xs.startDocument(CharEncoding.UTF_8, true);
 
                 for (Calendar calendar : calendars) {
                     xs.startTag("", "calendar");
@@ -172,22 +171,19 @@ public class AppCalendarRepository {
                 Log.e(AppCalendarRepository.class.getSimpleName(), "problem reading xml file", e);
             }
         }
-        return calendarsFile;
+        return calendarsXmlFile;
     }
 
-    private static ArrayList<Calendar> loadCalendarsFromXml(Context context) {
-        ArrayList<Calendar> calendars = new ArrayList<>();
+    protected static List<Calendar> loadCalendarsFromXml(File calendarsXmlFile) {
+        List<Calendar> calendars = new ArrayList<>();
 
         try {
-            File filesDir = context.getFilesDir();
-            File calendarsFile = new File(filesDir, IConst.CALENDARS_FILE);
-
-            if (calendarsFile.exists()) {
+            if (calendarsXmlFile.exists()) {
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
                 XmlPullParser xpp = factory.newPullParser();
 
-                xpp.setInput(new FileInputStream(calendarsFile), "UTF-8");
+                xpp.setInput(new FileInputStream(calendarsXmlFile), CharEncoding.UTF_8);
                 while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
                     if (xpp.getEventType() == XmlPullParser.START_TAG
                             && xpp.getName().equalsIgnoreCase("calendar")) {
@@ -203,7 +199,6 @@ public class AppCalendarRepository {
         } catch (XmlPullParserException e) {
             Log.e(AppCalendarRepository.class.getSimpleName(), "problem reading xml file", e);
         }
-
         return calendars;
     }
 
@@ -248,5 +243,11 @@ public class AppCalendarRepository {
                 return calendar;
         }
         return null;
+    }
+
+    @NonNull
+    private static File getCalendarsXmlFile(Context context) {
+        File filesDir = context.getFilesDir();
+        return new File(filesDir, IConst.CALENDARS_FILE);
     }
 }

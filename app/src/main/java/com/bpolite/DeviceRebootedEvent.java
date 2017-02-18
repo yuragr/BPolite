@@ -14,7 +14,6 @@ public class DeviceRebootedEvent extends BroadcastReceiver {
      */
     public void onReceive(Context context, Intent intent) {
         Log.d(this.getClass().getSimpleName(), "device was rebooted");
-
         CalendarCheckSchedulerUtils.scheduleCalendarCheck(context);
     }
 }

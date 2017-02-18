@@ -35,7 +35,7 @@ public class DeviceEventInstanceRepository {
     private static final int PROJECTION_AVAILABILITY_INDEX = 4;
 
     public static Set<EventInstance> getDeviceEventInstances(Context context, Calendar calendar) {
-        HashSet<EventInstance> eventInstances = new HashSet<>();
+        Set<EventInstance> eventInstances = new HashSet<>();
 
         long now = System.currentTimeMillis();
 

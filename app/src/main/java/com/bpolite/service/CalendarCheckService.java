@@ -38,8 +38,8 @@ public class CalendarCheckService extends IntentService {
 
             // check if the app is active (it means that at least one calendar should be treated by the app)
             List<Calendar> calendars = AppCalendarRepository.getCalendars(this);
-            HashSet<EventInstance> savedEventInstances = AppEventInstanceRepository
-                    .getEventInstancesFromXml(this);
+            Set<EventInstance> savedEventInstances = AppEventInstanceRepository
+                    .loadEventInstancesFromXml(this);
             if (!isAppActive(calendars)) {
                 Log.d(this.getClass().getSimpleName(),
                         "App is not active. No calendar should be checked");

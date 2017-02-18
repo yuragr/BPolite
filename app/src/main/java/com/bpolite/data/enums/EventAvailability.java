@@ -7,6 +7,7 @@ import com.bpolite.IConst;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public enum EventAvailability {
     BUSY(CalendarContract.Events.AVAILABILITY_BUSY, "Busy"),
@@ -55,7 +56,7 @@ public enum EventAvailability {
     }
 
     public static List<EventAvailability> getAsEnumList(String listStr) {
-        HashSet<EventAvailability> eventAvailabilitiesSet = new HashSet<>();
+        Set<EventAvailability> eventAvailabilitiesSet = new HashSet<>();
         if (listStr != null && !listStr.isEmpty()) {
             String[] tokens = listStr.split(IConst.COMMA);
 

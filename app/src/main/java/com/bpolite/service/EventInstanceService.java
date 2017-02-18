@@ -20,6 +20,7 @@ import com.bpolite.utils.NotificationUtils;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This service will be activated when a scheduled EventInstance will occur. This service will do the actual
@@ -69,7 +70,7 @@ public class EventInstanceService extends IntentService {
                 calendar = AppCalendarRepository.getCalendarByHashCode(this, calendarHashCode);
 
                 // check if this event still exists in the saved file
-                if (eventInstanceExists(eventInstanceHashCode, calendar)) {
+                if (eventInstanceExists(eventInstanceHashCode)) {
 
                     if (eventType.equals(EventInstanceType.START)) {
                         silenceRinger(audioManager, ringerMode, startTime, endTime, delayTime, availability);
@@ -86,9 +87,9 @@ public class EventInstanceService extends IntentService {
         Log.d(this.getClass().getSimpleName(), "<< onHandleIntent");
     }
 
-    private boolean eventInstanceExists(int eventInstanceHashCode, Calendar calendar) {
+    private boolean eventInstanceExists(int eventInstanceHashCode) {
         boolean result = false;
-        HashSet<EventInstance> eventInstances = AppEventInstanceRepository.getEventInstancesFromXml(this);
+        Set<EventInstance> eventInstances = AppEventInstanceRepository.loadEventInstancesFromXml(this);
         for (EventInstance eventInstance : eventInstances) {
             if (eventInstance.hashCode() == eventInstanceHashCode) {
                 result = true;
@@ -107,8 +108,7 @@ public class EventInstanceService extends IntentService {
                  * check if there is another event that is ongoing at the same time and it will end later, and
 				 * it will restore the ringer
 				 */
-                HashSet<EventInstance> eventInstances = AppEventInstanceRepository
-                        .getEventInstancesFromXml(this);
+                Set<EventInstance> eventInstances = AppEventInstanceRepository.loadEventInstancesFromXml(this);
 
                 long maxEndTime = endTime;
                 if (!eventInstances.isEmpty()) {
