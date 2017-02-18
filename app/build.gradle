@@ -28,4 +28,5 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.apache.commons:commons-collections4:4.1'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.2.2'
 }
