@@ -6,8 +6,6 @@ public interface IConst {
     String CALENDARS_FILE = "Calendars.xml";
     String EVENT_INSTANCES_FILE = "EventInstances.xml";
 
-    String SEMICOLON = ";";
-    String UNDERSCORE = "_";
     String COMMA = ",";
 
     long WEEK = 7L * 24L * 60L * 60L * 1000L;
@@ -19,7 +17,7 @@ public interface IConst {
     /**
      * how much we should wait after notifying "Shush!" app not to activate popup
      */
-    long SHUSH_RINGER_SILENCE_DELAY = 1L * SECOND;
+    long SHUSH_RINGER_SILENCE_DELAY = SECOND;
     long CALENDAR_CHECK_PERIOD = 2L * HOUR;
     long SCHEDULE_DELAY = 2L * SECOND;
 
