@@ -15,7 +15,7 @@ import com.bpolite.data.comparator.EventAvailabilityComparator;
 import com.bpolite.data.comparator.WeekDayComparator;
 import com.bpolite.data.enums.CalendarStatus;
 import com.bpolite.data.enums.EventAvailability;
-import com.bpolite.data.enums.RingerRestoreDelay;
+import com.bpolite.data.enums.RingerDelay;
 import com.bpolite.data.enums.WeekDay;
 import com.bpolite.data.pojo.Calendar;
 import com.bpolite.data.pojo.EventInstance;
@@ -245,11 +245,11 @@ public class CalendarSettingsActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Ringer Restore Delay");
 
-        builder.setItems(RingerRestoreDelay.getNames(), new DialogInterface.OnClickListener() {
+        builder.setItems(RingerDelay.getNames(), new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                calendar.setRingerRestoreDelay(RingerRestoreDelay.values()[which]);
+                calendar.setRingerRestoreDelay(RingerDelay.values()[which]);
                 AppCalendarRepository.saveCalendar(CalendarSettingsActivity.this, calendar);
 
                 updateRingerRestoreDelayView();

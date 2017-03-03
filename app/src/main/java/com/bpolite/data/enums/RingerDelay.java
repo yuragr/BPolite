@@ -1,11 +1,11 @@
 package com.bpolite.data.enums;
 
 
-public enum RingerRestoreDelay {
+public enum RingerDelay {
     NO_DELAY("No delay", 0), ONE_MIN("1 minute", 1), TWO_MIN("2 minutes", 2), FIVE_MIN("5 minutes", 5), TEN_MIN(
             "10 minutes", 10), FIFTEEN_MIN("15 minutes", 15), TWENTY_MIN("20 minutes", 20);
 
-    RingerRestoreDelay(String name, int value) {
+    RingerDelay(String name, int value) {
         this.name = name;
         this.value = value;
     }
@@ -21,17 +21,8 @@ public enum RingerRestoreDelay {
         return value;
     }
 
-    public static RingerRestoreDelay getAsEnum(int number) {
-        for (RingerRestoreDelay v : values()) {
-            if (number == v.getValue()) {
-                return v;
-            }
-        }
-        return RingerRestoreDelay.NO_DELAY;
-    }
-
     public static CharSequence[] getNames() {
-        RingerRestoreDelay[] allValues = RingerRestoreDelay.values();
+        RingerDelay[] allValues = RingerDelay.values();
         CharSequence[] names = new CharSequence[allValues.length];
         for (int i = 0; i < allValues.length; i++) {
             names[i] = allValues[i].getName();
@@ -39,7 +30,7 @@ public enum RingerRestoreDelay {
         return names;
     }
 
-    public static RingerRestoreDelay getByValue(int value) {
+    public static RingerDelay getByValue(int value) {
         switch (value) {
             case 0:
                 return NO_DELAY;

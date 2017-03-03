@@ -9,7 +9,7 @@ import android.util.Log;
 import com.bpolite.IConst;
 import com.bpolite.data.enums.EventAvailability;
 import com.bpolite.data.enums.EventInstanceType;
-import com.bpolite.data.enums.RingerRestoreDelay;
+import com.bpolite.data.enums.RingerDelay;
 import com.bpolite.service.EventInstanceService;
 
 import java.io.Serializable;
@@ -23,7 +23,7 @@ public class EventInstance implements Serializable {
     private EventInstanceType type;
     private int calendarHashCode = 0;
     private boolean active = true;
-    private RingerRestoreDelay ringerRestoreDelay;
+    private RingerDelay ringerRestoreDelay;
     private EventAvailability availability = EventAvailability.BUSY;
 
     /**
@@ -81,16 +81,16 @@ public class EventInstance implements Serializable {
         return active;
     }
 
-    public RingerRestoreDelay getRingerRestoreDelay() {
+    public RingerDelay getRingerRestoreDelay() {
         if (calendar != null)
             return ringerRestoreDelay = calendar.getRingerRestoreDelay();
         if (ringerRestoreDelay == null) {
-            ringerRestoreDelay = RingerRestoreDelay.NO_DELAY;
+            ringerRestoreDelay = RingerDelay.NO_DELAY;
         }
         return ringerRestoreDelay;
     }
 
-    public void setRingerRestoreDelay(RingerRestoreDelay ringerRestoreDelay) {
+    public void setRingerRestoreDelay(RingerDelay ringerRestoreDelay) {
         this.ringerRestoreDelay = ringerRestoreDelay;
     }
 

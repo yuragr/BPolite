@@ -8,7 +8,7 @@ import com.bpolite.IConst;
 import com.bpolite.data.comparator.CalendarComparator;
 import com.bpolite.data.enums.CalendarStatus;
 import com.bpolite.data.enums.EventAvailability;
-import com.bpolite.data.enums.RingerRestoreDelay;
+import com.bpolite.data.enums.RingerDelay;
 import com.bpolite.data.enums.WeekDay;
 import com.bpolite.data.pojo.Calendar;
 import com.bpolite.data.repo.device.DeviceCalendarRepository;
@@ -226,7 +226,7 @@ public class AppCalendarRepository {
                 } else if (property.equalsIgnoreCase("eventAvailabilities")) {
                     calendar.setEventAvailabilities(EventAvailability.getAsEnumList(xpp.getText()));
                 } else if (property.equalsIgnoreCase("ringerRestoreDelay")) {
-                    calendar.setRingerRestoreDelay(RingerRestoreDelay.getByValue(Integer.parseInt(xpp
+                    calendar.setRingerRestoreDelay(RingerDelay.getByValue(Integer.parseInt(xpp
                             .getText())));
                 }
             }

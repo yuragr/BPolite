@@ -8,7 +8,7 @@ import android.util.Log;
 import com.bpolite.IConst;
 import com.bpolite.data.enums.EventAvailability;
 import com.bpolite.data.enums.EventInstanceType;
-import com.bpolite.data.enums.RingerRestoreDelay;
+import com.bpolite.data.enums.RingerDelay;
 import com.bpolite.data.pojo.Calendar;
 import com.bpolite.data.pojo.EventInstance;
 
@@ -101,7 +101,7 @@ public class AppEventInstanceRepository {
                 } else if (property.equalsIgnoreCase("active")) {
                     eventInstance.setActive(Boolean.parseBoolean(xpp.getText()));
                 } else if (property.equalsIgnoreCase("ringerRestoreDelay")) {
-                    eventInstance.setRingerRestoreDelay(RingerRestoreDelay.getAsEnum(Integer.parseInt(xpp.getText())));
+                    eventInstance.setRingerRestoreDelay(RingerDelay.getByValue(Integer.parseInt(xpp.getText())));
                 } else if (property.equalsIgnoreCase("availability")) {
                     eventInstance.setAvailability(EventAvailability.getAsEnum(Integer.parseInt(xpp.getText())));
                 }

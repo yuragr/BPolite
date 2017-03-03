@@ -2,9 +2,6 @@ package com.bpolite.data.repo.app;
 
 import com.bpolite.BuildConfig;
 import com.bpolite.TestUtils;
-import com.bpolite.data.enums.EventAvailability;
-import com.bpolite.data.enums.EventInstanceType;
-import com.bpolite.data.enums.RingerRestoreDelay;
 import com.bpolite.data.pojo.Calendar;
 import com.bpolite.data.pojo.EventInstance;
 
@@ -19,8 +16,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

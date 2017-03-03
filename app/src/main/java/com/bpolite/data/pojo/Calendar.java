@@ -3,7 +3,7 @@ package com.bpolite.data.pojo;
 import com.bpolite.data.comparator.WeekDayComparator;
 import com.bpolite.data.enums.CalendarStatus;
 import com.bpolite.data.enums.EventAvailability;
-import com.bpolite.data.enums.RingerRestoreDelay;
+import com.bpolite.data.enums.RingerDelay;
 import com.bpolite.data.enums.WeekDay;
 import com.bpolite.utils.WeekDayUtils;
 
@@ -32,7 +32,7 @@ public class Calendar implements Serializable {
     private CalendarStatus status;
     private List<WeekDay> weekDays;
     private List<EventAvailability> eventAvailabilities;
-    private RingerRestoreDelay ringerRestoreDelay;
+    private RingerDelay ringerRestoreDelay;
 
     public Calendar() {
     }
@@ -80,13 +80,13 @@ public class Calendar implements Serializable {
         this.ownerName = ownerName;
     }
 
-    public RingerRestoreDelay getRingerRestoreDelay() {
+    public RingerDelay getRingerRestoreDelay() {
         if (ringerRestoreDelay == null)
-            ringerRestoreDelay = RingerRestoreDelay.NO_DELAY;
+            ringerRestoreDelay = RingerDelay.NO_DELAY;
         return ringerRestoreDelay;
     }
 
-    public void setRingerRestoreDelay(RingerRestoreDelay ringerRestoreDelay) {
+    public void setRingerRestoreDelay(RingerDelay ringerRestoreDelay) {
         this.ringerRestoreDelay = ringerRestoreDelay;
     }
 
@@ -114,7 +114,7 @@ public class Calendar implements Serializable {
 
             statusStr += " on " + WeekDayUtils.convertListToCommaSeparatedStringForDisplay(getWeekDays());
 
-            if (!getRingerRestoreDelay().equals(RingerRestoreDelay.NO_DELAY)) {
+            if (!getRingerRestoreDelay().equals(RingerDelay.NO_DELAY)) {
                 statusStr += " (+" + getRingerRestoreDelay().getValue() + ")";
             }
 

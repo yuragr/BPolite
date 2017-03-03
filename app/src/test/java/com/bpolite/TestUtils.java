@@ -3,7 +3,7 @@ package com.bpolite;
 import com.bpolite.data.enums.CalendarStatus;
 import com.bpolite.data.enums.EventAvailability;
 import com.bpolite.data.enums.EventInstanceType;
-import com.bpolite.data.enums.RingerRestoreDelay;
+import com.bpolite.data.enums.RingerDelay;
 import com.bpolite.data.enums.WeekDay;
 import com.bpolite.data.pojo.Calendar;
 import com.bpolite.data.pojo.EventInstance;
@@ -36,7 +36,7 @@ public class TestUtils {
         eventInstance.setEndTime(now + RandomUtils.nextInt(1000, 2000));
         eventInstance.setType(getRandomEnumValue(EventInstanceType.class));
         eventInstance.setActive(true);
-        eventInstance.setRingerRestoreDelay(getRandomEnumValue(RingerRestoreDelay.class));
+        eventInstance.setRingerRestoreDelay(getRandomEnumValue(RingerDelay.class));
         eventInstance.setAvailability(getRandomEnumValue(EventAvailability.class));
         eventInstance.setTitle(UUID.randomUUID().toString());
 
@@ -53,7 +53,7 @@ public class TestUtils {
         calendar.setStatus(getRandomEnumValue(CalendarStatus.class));
         calendar.setWeekDays(getRandomEnumValues(WeekDay.class));
         calendar.setEventAvailabilities(getRandomEnumValues(EventAvailability.class));
-        calendar.setRingerRestoreDelay(getRandomEnumValue(RingerRestoreDelay.class));
+        calendar.setRingerRestoreDelay(getRandomEnumValue(RingerDelay.class));
 
         return calendar;
     }

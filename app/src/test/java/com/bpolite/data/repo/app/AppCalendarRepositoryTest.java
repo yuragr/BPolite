@@ -2,13 +2,8 @@ package com.bpolite.data.repo.app;
 
 import com.bpolite.BuildConfig;
 import com.bpolite.TestUtils;
-import com.bpolite.data.enums.CalendarStatus;
-import com.bpolite.data.enums.EventAvailability;
-import com.bpolite.data.enums.RingerRestoreDelay;
-import com.bpolite.data.enums.WeekDay;
 import com.bpolite.data.pojo.Calendar;
 
-import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -16,14 +11,10 @@ import org.robolectric.annotation.Config;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**

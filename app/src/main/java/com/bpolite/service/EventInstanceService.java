@@ -162,6 +162,7 @@ public class EventInstanceService extends IntentService {
                         try {
                             Thread.sleep(IConst.SHUSH_RINGER_SILENCE_DELAY);
                         } catch (Exception e) {
+                            // TODO log
                         }
 
                         // silence the ringer
