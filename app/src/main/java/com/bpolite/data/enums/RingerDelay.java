@@ -2,7 +2,7 @@ package com.bpolite.data.enums;
 
 
 public enum RingerDelay {
-    NO_DELAY("No delay", 0), ONE_MIN("1 minute", 1), TWO_MIN("2 minutes", 2), FIVE_MIN("5 minutes", 5), TEN_MIN(
+    NO_DELAY("0 minutes", 0), ONE_MIN("1 minute", 1), TWO_MIN("2 minutes", 2), FIVE_MIN("5 minutes", 5), TEN_MIN(
             "10 minutes", 10), FIFTEEN_MIN("15 minutes", 15), TWENTY_MIN("20 minutes", 20);
 
     RingerDelay(String name, int value) {
