@@ -1,16 +1,9 @@
 package com.bpolite.data.pojo;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-
 import com.bpolite.IConst;
 import com.bpolite.data.enums.EventAvailability;
 import com.bpolite.data.enums.EventInstanceType;
 import com.bpolite.data.enums.RingerDelay;
-import com.bpolite.service.EventInstanceService;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -127,58 +120,12 @@ public class EventInstance implements Serializable {
         this.calendarHashCode = calendarHashCode;
     }
 
-    /**
-     * Cancels the scheduled mute / vibrate action for this event instance
-     */
-    public void cancel(Context context) {
-        if (active) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(context, EventInstanceService.class);
-            putExtraIntentData(intent);
-            PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
-            alarmManager.cancel(pendingIntent);
-            //			Log.d(this.getClass().getSimpleName(), "EventInstance: cancel - " + title + "(" + type.getValue()
-            //					+ " on " + IConst.LONG_DATE_FORMAT.format(new Date(getEventTime())) + ")");
-        }
-        active = false;
-    }
-
-    /**
-     * Creates the scheduled mute / vibrate / restore the ringer alarm for this event instance, that will do
-     * the actual silencing
-     */
-    public void activate(Context context) {
-
-        long eventTime = getEventTime();
-
-        // prepare the action for muting / silencing the ringer
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, EventInstanceService.class);
-        putExtraIntentData(intent);
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, eventTime, pendingIntent);
-
-        Log.d(EventInstance.class.getSimpleName(), "EventInstance: activate - " + title + "(" + type.getValue()
-                + " on " + IConst.LONG_DATE_FORMAT.format(new Date(eventTime)) + ")");
-    }
 
     public long getEventTime() {
         return this.type.equals(EventInstanceType.START) ? startTime : endTime
                 + getRingerRestoreDelay().getValue() * IConst.MINUTE;
     }
 
-    private void putExtraIntentData(Intent intent) {
-        intent.putExtra("eventInstanceHashCode", this.hashCode());
-        intent.putExtra("calendarHashCode", calendar.hashCode());
-        intent.putExtra("type", this.getType().getValue());
-        intent.putExtra("title", this.getTitle());
-        intent.putExtra("startTime", this.getStartTime());
-        intent.putExtra("endTime", this.getEndTime());
-        intent.putExtra("delayTime", ((long) this.getRingerRestoreDelay().getValue()) * IConst.MINUTE);
-        intent.putExtra("userAction", false);
-        intent.putExtra("availability", availability.getValue());
-        intent.setAction("" + this.hashCode());
-    }
 
     public String toString() {
         String start = IConst.LONG_DATE_FORMAT.format(new Date(startTime));

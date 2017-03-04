@@ -23,6 +23,7 @@ import com.bpolite.data.repo.app.AppCalendarRepository;
 import com.bpolite.data.repo.app.AppEventInstanceRepository;
 import com.bpolite.data.repo.device.DeviceEventInstanceRepository;
 import com.bpolite.utils.CalendarCheckSchedulerUtils;
+import com.bpolite.utils.EventInstanceUtils;
 import com.bpolite.utils.WeekDayUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -280,7 +281,7 @@ public class CalendarSettingsActivity extends Activity {
             Set<EventInstance> eventInstances = DeviceEventInstanceRepository.getDeviceEventInstances(
                     CalendarSettingsActivity.this, calendar);
             for (EventInstance eventInstance : eventInstances) {
-                eventInstance.cancel(CalendarSettingsActivity.this);
+                EventInstanceUtils.cancelEventInstance(this, eventInstance);
             }
             AppEventInstanceRepository.deleteEventInstances(CalendarSettingsActivity.this, eventInstances);
             AppCalendarRepository.saveCalendar(CalendarSettingsActivity.this, calendar);
