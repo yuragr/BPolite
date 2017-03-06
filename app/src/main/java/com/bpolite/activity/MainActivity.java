@@ -1,13 +1,5 @@
 package com.bpolite.activity;
 
-/*
- * We have to find what is the corporate calendar. For this we have to find the only calendar whose
- * accountName property doesn't ends with "...@gmail.com". This should be the corporate's account calendar. If
- * we don't have a corporate account, then we have to make the main google account's calendar as the one that
- * we mute. In order to identify the main google calendar - it should be the one with the accountName =
- * ownerName = "googleAccountName"
- */
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -47,7 +39,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkPermissions();
-        readCalendars();
+        loadCalendars();
 
         if (calendars == null || calendars.isEmpty()) {
             setContentView(R.layout.activity_main_no_calendars);
@@ -80,10 +72,8 @@ public class MainActivity extends Activity {
                                 Manifest.permission.WAKE_LOCK},
                         MY_PERMISSIONS_REQUEST);
             }
-
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -104,18 +94,17 @@ public class MainActivity extends Activity {
 
     private synchronized List<Map<String, Serializable>> getCalendars() {
         List<Map<String, Serializable>> calendarMaps = new ArrayList<>();
-        readCalendars();
+        loadCalendars();
 
         Collections.sort(calendars, new CalendarComparator());
 
         for (Calendar calendar : calendars) {
             calendarMaps.add(calendar.getAsMap());
         }
-
         return calendarMaps;
     }
 
-    private synchronized void readCalendars() {
+    private synchronized void loadCalendars() {
         if (!started) {
             calendars = AppCalendarRepository.getCalendars(MainActivity.this);
             started = true;
@@ -165,13 +154,19 @@ public class MainActivity extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                //						handleCalendarClick(view, id);
                 Intent intent = new Intent(getApplicationContext(), CalendarSettingsActivity.class);
                 intent.putExtra("calendarHashCode", calendars.get((int) id).hashCode());
                 startActivity(intent);
-
             }
         });
     }
+
+    /* TODO
+     * When the app starts, we want to select at least one calendar and activate it.
+     * We have to find what is the corporate calendar. For this we have to find the only calendar whose
+     * accountName property doesn't ends with "...@gmail.com". This should be the corporate's account calendar. If
+     * we don't have a corporate account, then we have to make the main google account's calendar as the one that
+     * we mute. In order to identify the main google calendar - it should be the one with the accountName =
+     * ownerName = "googleAccountName"
+     */
 }
